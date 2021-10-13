@@ -60,7 +60,7 @@ extension ViewController {
     }
 }
 
-//MARK: CoreLocation methods
+//MARK: CoreLocation methods with API call
 extension ViewController: CLLocationManagerDelegate {
     func getLocation() {
         if (CLLocationManager.locationServicesEnabled()) {
