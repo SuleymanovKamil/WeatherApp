@@ -10,9 +10,9 @@ import CoreLocation
 
 class ViewController: UIViewController {
     var locationManager: CLLocationManager!
+    @IBOutlet weak var isLoading: UIActivityIndicatorView!
     
     @IBOutlet weak var iconImage: UIImageView!
-    @IBOutlet weak var isLoading: UIActivityIndicatorView!
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var weatherView: UIView!
     
@@ -22,12 +22,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var windLabel: UILabel!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
-    
+}
+
+//MARK: ViewController methods
+extension ViewController {
     func setupView() {
         weatherView.isHidden = true
         loadingView.layer.cornerRadius = 15
@@ -58,7 +60,7 @@ class ViewController: UIViewController {
     }
 }
 
-
+//MARK: CoreLocation methods
 extension ViewController: CLLocationManagerDelegate {
     func getLocation() {
         if (CLLocationManager.locationServicesEnabled()) {
@@ -73,12 +75,10 @@ extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last! as CLLocation
         locationManager.stopUpdatingLocation()
-        APIService.shared.getWeather(lat: location.coordinate.latitude, long: location.coordinate.longitude) { [weak self ] weather in
+        APIService.shared.getWeather(lat: location.coordinate.latitude, long: location.coordinate.longitude) { [weak self] weather in
             self?.addTextOnLabels(weather: weather)
             APIService.shared.getIcon(from: weather) { self?.iconImage.image = $0 }
-          
         }
-      
     }
 }
 
